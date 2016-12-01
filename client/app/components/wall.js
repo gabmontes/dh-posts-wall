@@ -14,43 +14,54 @@ export default class Wall extends Component {
     this.onSubmit = this.onSubmit.bind(this)
     this.onVote = this.onVote.bind(this)
   }
-  fetchPosts() {
+  getPosts() {
     const self = this
     const url = `${hostname}/posts`
-    fetch(url)
+    return fetch(url)
       .then(response => response.json())
-      .then(function (body) {
-        self.setState({
-          fetching: false,
-          posts: body
-        })
-    })
   }
-  componentDidMount() {
-    const self = this
-    setInterval(function () {
-      self.fetchPosts()
-    }, 1000)
-  }
-  onSubmit(text) {
+  sendNewPost(text) {
     const self = this
     const url = `${hostname}/posts`
     const headers = new Headers({ 'Content-Type': 'application/json' })
     const body = JSON.stringify({ text })
-    fetch(url, { method: 'POST', headers, body })
-      .then(function () {
-        self.fetchPosts()
-      })
+    return fetch(url, { method: 'POST', headers, body })
+      .then(response => response.json())
   }
-  onVote(id, action) {
+  votePost(id, action) {
     const self = this
     const url = `${hostname}/posts/${id}`
     const headers = new Headers({ 'Content-Type': 'application/json' })
     const body = JSON.stringify({ action })
     fetch(url, { method: 'PATCH', headers, body })
-      .then(function () {
-        self.fetchPosts()
+      .then(response => response.json())
+  }
+  componentDidMount() {
+    const self = this
+    setInterval(function () {
+      self.getPosts().then(function (posts) {
+        self.setState({
+          fetching: false,
+          posts
+        })
       })
+    }, 1000)
+  }
+  onSubmit(text) {
+    const self = this
+    this.sendNewPost(text).then(function () {
+      return self.getPosts()
+    }).then(function (posts) {
+      self.setState({ posts })
+    })
+  }
+  onVote(id, action) {
+    const self = this
+    this.votePost(id, action).then(function () {
+      return self.getPosts()
+    }).then(function (posts) {
+      self.setState({ posts })
+    })
   }
   render() {
     const { fetching, posts } = this.state
