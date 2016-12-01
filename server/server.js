@@ -52,12 +52,12 @@ app.patch('/posts/:id', function (req, res) {
     case 'up':
       console.log(`Up to post ${id}`)
       post.up += 1
-      res.status(200).end()
+      res.send(post)
       break
     case 'down':
       console.log(`Down to post ${id}`)
       post.down += 1
-      res.status(200).end()
+      res.send(post)
       break
     default:
       console.log('Invalid action')
