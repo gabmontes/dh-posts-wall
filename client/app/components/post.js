@@ -6,8 +6,16 @@ export default function Post({ id, text, up, down, onVote }) {
       <div>
         {text}
       </div>
-      <button onClick={() => onVote(id, 'up')} >{`Me gusta (${up})`}</button>
-      <button onClick={() => onVote(id, 'down')}>{`No me gusta (${down})`}</button>
+      <button
+        onClick={() => onVote(id, 'up')}
+        disabled={id < 0}>
+        {`Me gusta (${up})`}
+      </button>
+      <button
+        onClick={() => onVote(id, 'down')}
+        disabled={id < 0}>
+        {`No me gusta (${down})`}
+      </button>
     </div>
   )
 }

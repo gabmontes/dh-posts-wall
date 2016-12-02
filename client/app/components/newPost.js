@@ -14,7 +14,7 @@ export default class NewPost extends Component {
       value: event.target.value
     })
   }
-  onClick(event) {
+  onClick() {
     const { onSubmit } = this.props
     onSubmit(this.state.value)
     this.setState({
@@ -22,13 +22,18 @@ export default class NewPost extends Component {
     })
   }
   render() {
+    const { fetching } = this.props
     const { value } = this.state
     return (
       <div style={{ margin: 10 }}>
         <div>
-          <textarea onChange={this.onChange} value={value}></textarea>
+          <textarea onChange={this.onChange} value={value}/>
         </div>
-        <button onClick={this.onClick} disabled={!value}>Enviar</button>
+        <button
+          onClick={this.onClick}
+          disabled={fetching || !value}>
+          Enviar
+        </button>
       </div>
     )
   }
