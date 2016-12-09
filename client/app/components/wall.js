@@ -11,12 +11,12 @@ export default class Wall extends Component {
     }, 5000)
   }
   render() {
-    const { onSubmit, onVote } = this.props
+    const { sendNewPost, votePost } = this.props
     const { fetching, posts } = this.props
     return (
       <div>
-        <NewPost fetching={fetching} onSubmit={onSubmit}/>
-        <PostsList fetching={fetching} posts={posts} onVote={onVote}/>
+        <NewPost fetching={fetching} onSubmit={sendNewPost}/>
+        <PostsList fetching={fetching} posts={posts} onVote={votePost}/>
       </div>
     )
   }

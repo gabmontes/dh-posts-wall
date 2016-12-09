@@ -1,6 +1,7 @@
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { getPosts, sendNewPost, votePost } from '../actions'
+import * as actions from '../actions'
 import Wall from '../components/wall'
 
 function mapStateToProps(state) {
@@ -8,17 +9,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    getPosts: function () {
-      dispatch(getPosts())
-    },
-    onSubmit: function (text) {
-      dispatch(sendNewPost(text))
-    },
-    onVote: function (id, action) {
-      dispatch(votePost(id, action))
-    }
-  }
+  return bindActionCreators(actions, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wall)
